@@ -35,7 +35,9 @@ const Auth = () => {
   };
 
   useEffect(() => {
-    if (!response) return;
+    if (!response) {
+      return;
+    }
 
     setToken(response.user.token);
     setSuccessfullSubmit(true);

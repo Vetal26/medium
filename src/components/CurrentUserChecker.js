@@ -19,7 +19,10 @@ const CurrentUserChecker = ({ children }) => {
   }, [doFetch, setCurrentUserState, token]);
 
   useEffect(() => {
-    if (!response) return;
+    if (!response) {
+      return;
+    }
+
     setCurrentUserState((prev) => ({
       ...prev,
       isLoggedIn: true,

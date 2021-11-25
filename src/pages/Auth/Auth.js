@@ -15,7 +15,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [isSuccessfullSubmit, setSuccessfullSubmit] = useState(false);
-  const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
+  const [{ response, isLoading }, doFetch] = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage('token');
 
   const handleSubmit = (event) => {
@@ -34,7 +34,7 @@ const Auth = () => {
 
     setToken(response.user.token);
     setSuccessfullSubmit(true);
-  }, [response]);
+  }, [response, setToken]);
 
   if (isSuccessfullSubmit) return <Navigate to="/" replace={true} />;
 

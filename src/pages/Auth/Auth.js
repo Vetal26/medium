@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { CurrentUserContext } from '../../contexts/currentUser';
 
 const Auth = () => {
   const { pathname } = useLocation();
@@ -15,8 +16,10 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [isSuccessfullSubmit, setSuccessfullSubmit] = useState(false);
-  const [{ response, isLoading }, doFetch] = useFetch(apiUrl);
+  const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage('token');
+  const [currentUserState, setCurrentUserState] =
+    useContext(CurrentUserContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,7 +37,13 @@ const Auth = () => {
 
     setToken(response.user.token);
     setSuccessfullSubmit(true);
-  }, [response, setToken]);
+    setCurrentUserState((prev) => ({
+      ...prev,
+      isloggedIn: true,
+      isLoading: false,
+      currentUserState: response.user,
+    }));
+  }, [response, setCurrentUserState, setToken]);
 
   if (isSuccessfullSubmit) return <Navigate to="/" replace={true} />;
 

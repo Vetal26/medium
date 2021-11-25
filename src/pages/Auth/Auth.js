@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const emailRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,8 +26,9 @@ const Auth = () => {
                     type="email"
                     className="form-control form-control-lg"
                     placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    // value={email}
+                    // onChange={(e) => setEmail(e.target.value)}
+                    ref={emailRef}
                   />
                 </fieldset>
                 <fieldset className="form-group">

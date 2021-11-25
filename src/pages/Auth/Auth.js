@@ -3,6 +3,7 @@ import { Link, useLocation, Navigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { CurrentUserContext } from '../../contexts/currentUser';
+import BackendErrorMessages from '../../components/BackendErrorMessages';
 
 const Auth = () => {
   const { pathname } = useLocation();
@@ -17,9 +18,8 @@ const Auth = () => {
   const [userName, setUserName] = useState('');
   const [isSuccessfullSubmit, setSuccessfullSubmit] = useState(false);
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
-  const [token, setToken] = useLocalStorage('token');
-  const [currentUserState, setCurrentUserState] =
-    useContext(CurrentUserContext);
+  const [, setToken] = useLocalStorage('token');
+  const [, setCurrentUserState] = useContext(CurrentUserContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -57,6 +57,7 @@ const Auth = () => {
               <Link to={descriptionLink}>{descriptionText}</Link>
             </p>
             <form onSubmit={handleSubmit}>
+              {error && <BackendErrorMessages backendErrors={error.errors} />}
               <fieldset>
                 {!isLogin && (
                   <fieldset className="form-group">

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 
 const Auth = () => {
@@ -13,6 +13,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
+  const [isSuccessfullSubmit, setSuccessfullSubmit] = useState(false);
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
 
   const handleSubmit = (event) => {
@@ -25,6 +26,16 @@ const Auth = () => {
       data: { user },
     });
   };
+
+  useEffect(() => {
+    if (!response) return;
+
+    localStorage.setItem('token', response.user.token);
+
+    setSuccessfullSubmit(true);
+  }, [response]);
+
+  if (isSuccessfullSubmit) return <Navigate to="/" replace={true} />;
 
   return (
     <div className="auth-page">

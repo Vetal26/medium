@@ -24,7 +24,9 @@ const Auth = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const user = isLogin ? { email, password } : { email, password, userName };
+    const user = isLogin
+      ? { email, password }
+      : { email, password, username: userName };
 
     doFetch({
       method: 'POST',

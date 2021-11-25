@@ -1,14 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const emailRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
   };
+
+  useEffect(() => {
+    if (!isSubmitting) {
+      return;
+    }
+    axios('https://conduit.productionready.io/api/users/login', {
+      method: 'POST',
+      data: {
+        user: { email, password },
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsSubmitting(false);
+      });
+  }, [isSubmitting]);
 
   return (
     <div className="auth-page">
@@ -26,9 +48,8 @@ const Auth = () => {
                     type="email"
                     className="form-control form-control-lg"
                     placeholder="Email"
-                    // value={email}
-                    // onChange={(e) => setEmail(e.target.value)}
-                    ref={emailRef}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </fieldset>
                 <fieldset className="form-group">
@@ -43,6 +64,7 @@ const Auth = () => {
                 <button
                   className="btn btn-lg btn-primary pull-xs-right"
                   type="submit"
+                  disabled={isSubmitting}
                 >
                   Sign in
                 </button>

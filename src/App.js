@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import GlobalFeed from './pages/GlobalFeed';
 import TagFeed from './pages/TagFeed';
+import YourFeed from './pages/YourFeed';
 import Article from './pages/Article';
 import TopBar from './components/TopBar';
 import Auth from './pages/Auth';
@@ -16,6 +17,7 @@ function App() {
           <TopBar />
           <Routes>
             <Route path="/" element={<GlobalFeed />} />
+            <Route path="/feed" element={<YourFeed />} />
             <Route path="/tags/:slug" element={<TagFeed />} />
             <Route path="/articles/:slug" element={<Article />} />
             <Route path="/login" element={<Auth />} />

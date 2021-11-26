@@ -1,14 +1,25 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { stringify } from 'query-string';
 import Feed from '../../components/Feed';
+import Pagination from '../../components/Pagination';
 import useFetch from '../../hooks/useFetch';
+import { getPaginator, limit } from '../../utils';
 
 const GlobalFeed = () => {
-  const apiUrl = '/articles?limit=10&offset=0';
+  const { search, pathname } = useLocation();
+  console.log(pathname);
+  const { offset, currentPage } = getPaginator(search);
+  const stringifiedParams = stringify({
+    limit,
+    offset,
+  });
+  const apiUrl = `/articles?${stringifiedParams}`;
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
 
   useEffect(() => {
     doFetch();
-  }, [doFetch]);
+  }, [doFetch, currentPage]);
 
   return (
     <div className="home-page">
@@ -23,7 +34,17 @@ const GlobalFeed = () => {
           <div className="col-md-9">
             {isLoading && <div>Loading...</div>}
             {error && <div>Some error happened</div>}
-            {!isLoading && response && <Feed articles={response.articles} />}
+            {!isLoading && response && (
+              <>
+                <Feed articles={response.articles} />
+                <Pagination
+                  total={response.articlesCount}
+                  limit={limit}
+                  url={pathname}
+                  currentPage={currentPage}
+                />
+              </>
+            )}
           </div>
           <div className="col-md-3">Popular tags</div>
         </div>

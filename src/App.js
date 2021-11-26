@@ -7,6 +7,7 @@ import Article from './pages/Article';
 import TopBar from './components/TopBar';
 import Auth from './pages/Auth';
 import CreateArticle from './pages/CreateArticle';
+import EditArticle from './pages/EditArticle';
 import { CurrentUserProvider } from './contexts/currentUser';
 import CurrentUserChecker from './components/CurrentUserChecker';
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/feed" element={<YourFeed />} />
             <Route path="/tags/:slug" element={<TagFeed />} />
             <Route path="/articles/:slug" element={<Article />} />
+            <Route path="/articles/:slug/edit" element={<EditArticle />} />
             <Route path="/articles/new" element={<CreateArticle />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/register" element={<Auth />} />

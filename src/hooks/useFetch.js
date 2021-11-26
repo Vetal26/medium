@@ -27,7 +27,6 @@ const useFetch = (url) => {
     }
     axios(baseUrl + url, requestOptions)
       .then((res) => {
-        console.log(res);
         setIsLoading(false);
         setResponse(res.data);
       })

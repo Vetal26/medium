@@ -19,7 +19,6 @@ const PopularTags = () => {
     return <ErrorMessage />;
   }
 
-  console.log(response.tags);
   return (
     <div className="sidebar">
       <p>Popular tags</p>

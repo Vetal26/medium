@@ -8,6 +8,7 @@ import { getPaginator, limit } from '../../utils';
 import PopularTags from '../../components/PopularTags';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
+import FeedToogler from '../../components/FeedToogler';
 
 const GlobalFeed = () => {
   const { search, pathname } = useLocation();
@@ -34,6 +35,7 @@ const GlobalFeed = () => {
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
+            <FeedToogler />
             {isLoading && <Loading />}
             {error && <ErrorMessage />}
             {!isLoading && response && (

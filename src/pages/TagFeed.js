@@ -1,28 +1,30 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { stringify } from 'query-string';
-import Feed from '../../components/Feed';
-import Pagination from '../../components/Pagination';
-import useFetch from '../../hooks/useFetch';
-import { getPaginator, limit } from '../../utils';
-import PopularTags from '../../components/PopularTags';
-import Loading from '../../components/Loading';
-import ErrorMessage from '../../components/ErrorMessage';
-import FeedToogler from '../../components/FeedToogler';
+import Feed from '../components/Feed';
+import Pagination from '../components/Pagination';
+import useFetch from '../hooks/useFetch';
+import { getPaginator, limit } from '../utils';
+import PopularTags from '../components/PopularTags';
+import Loading from '../components/Loading';
+import ErrorMessage from '../components/ErrorMessage';
+import FeedToogler from '../components/FeedToogler';
 
-const GlobalFeed = () => {
+const TagFeed = () => {
   const { search, pathname } = useLocation();
+  const tagName = useParams().slug;
   const { offset, currentPage } = getPaginator(search);
   const stringifiedParams = stringify({
     limit,
     offset,
+    tag: tagName,
   });
   const apiUrl = `/articles?${stringifiedParams}`;
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
 
   useEffect(() => {
     doFetch();
-  }, [doFetch, currentPage]);
+  }, [doFetch, currentPage, tagName]);
 
   return (
     <div className="home-page">
@@ -35,7 +37,7 @@ const GlobalFeed = () => {
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
-            <FeedToogler />
+            <FeedToogler tagName={tagName} />
             {isLoading && <Loading />}
             {error && <ErrorMessage />}
             {!isLoading && response && (
@@ -59,4 +61,4 @@ const GlobalFeed = () => {
   );
 };
 
-export default GlobalFeed;
+export default TagFeed;

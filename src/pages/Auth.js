@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation, Navigate } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { CurrentUserContext } from '../../contexts/currentUser';
-import BackendErrorMessages from '../../components/BackendErrorMessages';
+import useFetch from '../hooks/useFetch';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { CurrentUserContext } from '../contexts/currentUser';
+import BackendErrorMessages from '../components/BackendErrorMessages';
 
 const Auth = () => {
   const { pathname } = useLocation();

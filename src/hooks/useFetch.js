@@ -16,6 +16,8 @@ const useFetch = (url) => {
   }, []);
 
   useEffect(() => {
+    let skipGetResponseAutoDestroy = false;
+
     if (!isLoading) {
       return;
     }
@@ -29,13 +31,20 @@ const useFetch = (url) => {
 
     axios(baseUrl + url, requestOptions)
       .then((res) => {
-        setResponse(res.data);
-        setIsLoading(false);
+        if (!skipGetResponseAutoDestroy) {
+          setResponse(res.data);
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
-        setError(err.response.data);
-        setIsLoading(false);
+        if (!skipGetResponseAutoDestroy) {
+          setError(err.response.data);
+          setIsLoading(false);
+        }
       });
+    return () => {
+      skipGetResponseAutoDestroy = true;
+    };
   }, [isLoading, options, token, url]);
 
   return [{ isLoading, response, error }, doFetch];

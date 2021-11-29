@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 
 import useFetch from '../hooks/useFetch';
+import UserArticles from '../components/UserArticles';
 
 const UserProfile = () => {
   const { slug } = useParams();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const isFavorites = pathname.includes('favorites');
   const apiUrl = `/profiles/${slug}`;
   const [{ response }, doFetch] = useFetch(apiUrl);
@@ -40,6 +41,7 @@ const UserProfile = () => {
                   <NavLink
                     to={`/profiles/${response.profile.username}`}
                     className="nav-link"
+                    end
                   >
                     My Posts
                   </NavLink>
@@ -54,7 +56,12 @@ const UserProfile = () => {
                 </li>
               </ul>
             </div>
-            user articles
+            <UserArticles
+              username={response.profile.username}
+              location={search}
+              isFavorites={isFavorites}
+              url={pathname}
+            />
           </div>
         </div>
       </div>

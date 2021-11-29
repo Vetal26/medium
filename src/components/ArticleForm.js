@@ -9,7 +9,8 @@ const ArticleForm = ({ onSubmit, errors, initialValues }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const article = { title, body, description, tagList };
+
+    const article = { title, body, description, tagList: tagList.split(' ') };
     onSubmit(article);
   };
 
@@ -17,10 +18,11 @@ const ArticleForm = ({ onSubmit, errors, initialValues }) => {
     if (!initialValues) {
       return;
     }
+
     setTitle(initialValues.title);
     setDescription(initialValues.description);
     setBody(initialValues.body);
-    setTagList(initialValues.tagList.join(' '));
+    setTagList(initialValues.tagList);
   }, [initialValues]);
 
   return (

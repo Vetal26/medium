@@ -5,18 +5,18 @@ import useFetch from '../hooks/useFetch';
 import { CurrentUserContext } from '../contexts/currentUser';
 
 const EditArticle = () => {
-  const slug = useParams().slug;
-  const [currentUserState] = useContext(CurrentUserContext);
+  const { slug } = useParams();
   const apiUrl = `/articles/${slug}`;
-  const [{ response: fetchArticleResponse }, doFetchActicle] = useFetch(apiUrl);
+  const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false);
   const [
     { response: updateArticleResponse, error: updateArticleError },
     doUpdateActicle,
   ] = useFetch(apiUrl);
+  const [{ response: fetchArticleResponse }, doFetchActicle] = useFetch(apiUrl);
+  const [currentUserState] = useContext(CurrentUserContext);
   const [initialValues, setInitialValues] = useState(null);
-  const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false);
 
-  const handleSubmit = (article) => {
+  const onSubmit = (article) => {
     doUpdateActicle({
       method: 'PUT',
       data: { article },
@@ -36,7 +36,7 @@ const EditArticle = () => {
       title: fetchArticleResponse.article.title,
       description: fetchArticleResponse.article.description,
       body: fetchArticleResponse.article.body,
-      tagList: fetchArticleResponse.article.tagList,
+      tagList: fetchArticleResponse.article.tagList.join(' '),
     });
   }, [fetchArticleResponse]);
 
@@ -48,6 +48,10 @@ const EditArticle = () => {
     setIsSuccessfullSubmit(true);
   }, [updateArticleResponse]);
 
+  if (currentUserState.isLoggedIn === null) {
+    return;
+  }
+
   if (currentUserState.isLoggedIn === false) {
     return <Navigate to="/" />;
   }
@@ -56,11 +60,9 @@ const EditArticle = () => {
     return <Navigate to={`/articles/${slug}`} />;
   }
 
-  console.log(updateArticleError);
-
   return (
     <ArticleForm
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       errors={(updateArticleError && updateArticleError.errors) || {}}
       initialValues={initialValues}
     />

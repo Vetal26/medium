@@ -16,24 +16,25 @@ const useFetch = (url) => {
   }, []);
 
   useEffect(() => {
+    if (!isLoading) {
+      return;
+    }
+
     const requestOptions = {
       ...options,
       ...{
         headers: { authorization: token ? `Bearer ${token}` : '' },
       },
     };
-    if (!isLoading) {
-      return;
-    }
+
     axios(baseUrl + url, requestOptions)
       .then((res) => {
-        setIsLoading(false);
         setResponse(res.data);
+        setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
         setError(err.response.data);
+        setIsLoading(false);
       });
   }, [isLoading, options, token, url]);
 

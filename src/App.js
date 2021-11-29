@@ -8,6 +8,7 @@ import TopBar from './components/TopBar';
 import Auth from './pages/Auth';
 import CreateArticle from './pages/CreateArticle';
 import EditArticle from './pages/EditArticle';
+import Settings from './pages/Settings';
 import { CurrentUserProvider } from './contexts/currentUser';
 import CurrentUserChecker from './components/CurrentUserChecker';
 
@@ -19,6 +20,7 @@ function App() {
           <TopBar />
           <Routes>
             <Route path="/" element={<GlobalFeed />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/feed" element={<YourFeed />} />
             <Route path="/tags/:slug" element={<TagFeed />} />
             <Route path="/articles/:slug" element={<Article />} />
